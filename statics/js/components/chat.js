@@ -254,10 +254,13 @@ function restartConversation() {
   }
   $(".chats").html("");
   $(".usrInput").val("");
+
   showBotTyping();
-  setBotResponse("سلام 👋\n" + 
-          "من چت‌بات دوست داشتنی شما هستم. چگونه می‌توانم به شما کمک کنم؟");
-}
+  setBotResponse("سلام 👋<br>" + 
+          "من دستیار هوشمند مالیاتی شما هستم.<br>" +
+          "چگونه می‌توانم به شما کمک کنم؟");
+
+  }
 // triggers restartConversation function.
 $("#restart").click(() => {
   restartConversation();
@@ -374,6 +377,7 @@ $("#stopButton").on("click", (e) => {
           method: 'POST',
           body: formData,
           headers: {
+              // 'Content-Type': 'multipart/form-data',
               'Access-Control-Allow-Origin': '*',
           }
       }).then(function(response) {
@@ -444,7 +448,7 @@ async function addAudioMessage(audioUrl) {
     waveColor: '#FFFFFF',
     responsive: true,
     progressColor: 'purple',
-    // cursorColor: 'navy',
+    cursorColor: 'none',
     height: 20, // the height of the waveform
     plugins: [
       WaveSurfer.Timeline.create({

@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* import components */
 include('./statics/js/components/index.js');
-include('./statics/js/lib/index.js')
 
 window.addEventListener('load', () => {
   // initialization
@@ -46,13 +45,17 @@ window.addEventListener('load', () => {
     // customActionTrigger();
   });
   // Toggle the chatbot screen
+  var firstTime = true;
   $("#profile_div").click(() => {
     $(".profile_div").toggle();
     $(".widget").toggle();
-    showBotTyping();
-    setBotResponse("سلام 👋<br>" + 
-            "من دستیار هوشمند مالیاتی شما هستم.<br>" +
-            "چگونه می‌توانم به شما کمک کنم؟");
+    if (firstTime) {
+      showBotTyping();
+      setBotResponse("سلام 👋<br>" + 
+              "من دستیار هوشمند مالیاتی شما هستم.<br>" +
+              "چگونه می‌توانم به شما کمک کنم؟");
+      firstTime = false;
+    }
   });
 
   // clear function to clear the chat contents of the widget.
@@ -65,6 +68,12 @@ window.addEventListener('load', () => {
 
   // close function to close the widget.
   $("#close").click(() => {
+    $(".profile_div").toggle();
+    $(".widget").toggle();
+    scrollToBottomOfResults();
+  });
+
+  $("#close-btn").click(() => {
     $(".profile_div").toggle();
     $(".widget").toggle();
     scrollToBottomOfResults();
