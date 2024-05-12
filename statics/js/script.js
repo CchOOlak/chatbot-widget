@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* import components */
 include('./statics/js/components/index.js');
+include('./statics/js/lib/index.js')
 
 window.addEventListener('load', () => {
   // initialization

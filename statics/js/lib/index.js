@@ -13,3 +13,5 @@ include('./statics/js/lib/jquery.min.js');
 include('./statics/js/lib/materialize.min.js');
 include('./statics/js/lib/chart.min.js');
 include('./statics/js/lib/uuid.min.js');
+include('./statics/js/lib/wavesurfer.js');
+include('./statics/js/lib/wavesurfer.timeline.js');

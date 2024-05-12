@@ -15,7 +15,7 @@ var audioChunks = [];
  * @param {String} message user message
  */
 function setUserResponse(message) {
-  const user_response = `<img class="userAvatar" src='./statics/img/userAvatar.jpg'><p class="userMsg">${message} </p><div class="clearfix"></div>`;
+  const user_response = `<img class="userAvatar" src='./statics/img/userAvatar.jpg'><div class="userMsg">${message} </div><div class="clearfix"></div>`;
   $(user_response).appendTo(".chats").show("slow");
 
   $(".usrInput").val("");
@@ -327,6 +327,9 @@ $("#sendButton").on("click", (e) => {
 });
 
 $("#recordButton").on("click", (e) => {
+  $('#recordButton').hide();
+  $('#stopButton').show();
+
   $(".suggestions").remove();
   $("#paginated_cards").remove();
   $(".quickReplies").remove();
@@ -341,9 +344,6 @@ $("#recordButton").on("click", (e) => {
       mediaRecorder.addEventListener('dataavailable', function(event) {
           audioChunks.push(event.data);
       });
-
-      $('#recordButton').hide();
-      $('#stopButton').show();
   });
 
   e.preventDefault();
@@ -351,6 +351,9 @@ $("#recordButton").on("click", (e) => {
 });
 
 $("#stopButton").on("click", (e) => {
+  $('#stopButton').hide();
+  $('#recordButton').show();
+
   $(".suggestions").remove();
   $("#paginated_cards").remove();
   $(".quickReplies").remove();
@@ -361,6 +364,8 @@ $("#stopButton").on("click", (e) => {
 
   mediaRecorder.addEventListener('stop', function() {
       var audioBlob = new Blob(audioChunks);
+      var audioUrl = URL.createObjectURL(audioBlob);
+      addAudioMessage(audioUrl);
       var formData = new FormData();
       formData.append('audio', audioBlob);
 
@@ -403,3 +408,65 @@ $("#stopButton").on("click", (e) => {
   e.preventDefault();
   return false;
 });
+
+async function addAudioMessage(audioUrl) {
+  const waveId = 'waveform' + Date.now(); // Unique ID
+
+  const audioElement = document.createElement('div');
+  audioElement.className = 'waveform';
+  audioElement.id = `${waveId}`;
+
+  const audioTimelineElement = document.createElement('div');
+  audioTimelineElement.className = 'waveform-timeline';
+  audioTimelineElement.id = `${waveId}-timeline`;
+  audioElement.appendChild(audioTimelineElement);
+
+  const playBtn = document.createElement('button');
+  playBtn.className = 'play-button';
+  playBtn.id = `${waveId}-btn`;
+
+  const playBtnIcon = document.createElement('img');
+  playBtnIcon.className = 'play-button-icon';
+  playBtnIcon.src = './statics/img/play.svg';
+  playBtn.appendChild(playBtnIcon);
+
+  const user_response = `<img class="userAvatar" src='./statics/img/userAvatar.jpg'><div class="userMsg">`+
+  `<div id="${waveId}-box" class="waveform-box">${audioElement.outerHTML}</div>` +
+  `</div><div class="clearfix"></div>`;
+  $(user_response).appendTo(".chats").show("slow");
+  $(".usrInput").val("");
+  scrollToBottomOfResults();
+  showBotTyping();
+  $(".suggestions").remove();
+
+  const wavesurfer = WaveSurfer.create({
+    container: `#${waveId}`,
+    waveColor: '#FFFFFF',
+    responsive: true,
+    progressColor: 'purple',
+    // cursorColor: 'navy',
+    height: 20, // the height of the waveform
+    plugins: [
+      WaveSurfer.Timeline.create({
+        container: `#${waveId}-timeline`
+      }),
+    ],
+  });
+
+  wavesurfer.on('finish', function () {
+    playBtnIcon.src = "./statics/img/play.svg";
+  });
+
+  playBtn.addEventListener("click", function() {
+    wavesurfer.playPause()
+    const isPlaying = wavesurfer.isPlaying();
+    if (isPlaying === true) {
+      playBtnIcon.src = "./statics/img/pause.svg";
+    } else {
+      playBtnIcon.src = "./statics/img/play.svg";
+    }
+  });
+  document.querySelector(`#${waveId}-box`).appendChild(playBtn);
+
+  await wavesurfer.load(audioUrl);
+}

@@ -221,6 +221,42 @@ blockquote {
   color: #21678a;
 }
 
+.play-button {
+  height: 15px;
+  width: 15px;
+  justify-content: center;
+  /* Reset default button styles */
+  border: none;
+  background-color: transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+.play-button:active {
+  background-color: transparent; /* Remove the background color */
+  border: none; /* Remove the border */
+  outline: none; /* Remove the outline */
+}
+
+.play-button:focus {
+  background-color: transparent; /* Remove the background color */
+  border: none; /* Remove the border */
+  outline: none; /* Remove the outline */
+}
+
+.play-button-icon {
+  /* margin: 5px; */
+  height: 15px;
+  width: 15px;
+  filter: invert(100%);
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.waveform-timeline {
+  float: right;
+}
+
 .imgProfile {
   box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 10px 0 #00000096;
   border-radius: 50px;
