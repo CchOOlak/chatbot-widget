@@ -108,60 +108,42 @@ function setBotResponse(response) {
  */
 async function send(message) {
   await new Promise((r) => setTimeout(r, 2000));
-  $.ajax({
-    url: `${backendUrl}/api/chatbot/document/messages/`,
-    type: "POST",
-    contentType: "application/json",
-    data: JSON.stringify({
-      text: message,
-      doc_id: 4
-    }),
-    success(botResponse, status) {
-      console.log("Response from Rasa: ", botResponse, "\nStatus: ", status);
-
-      // if user wants to restart the chat and clear the existing chat contents
-      if (message.toLowerCase() === "/restart") {
-        $("#userInput").prop("disabled", false);
-
-        // if you want the bot to start the conversation after restart
-        // customActionTrigger();
-        return;
+  fetch(`${backendUrl}/api/chatbot/document/messages/`, {
+      method: 'POST',
+      body: JSON.stringify({
+          text: message,
+          doc_id: 3
+      }),
+      headers: {
+          'accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
       }
-      var messageId = botResponse.id;
-      // Check the status of messageId here
-      var checkStatusInterval = setInterval(function() {
-        // TODO: set timeout
-          fetch(`${backendUrl}/api/chatbot/messages/track/${messageId}/`)
-          .then(function(response) {
-              return response.json();
-          }).then(function(data) {
-              hideBotTyping();
-              if (data.status === 'SUCCESS') {
-                  clearInterval(checkStatusInterval);
-                  // Append the response message to the chatbox
-                  setBotResponse(data.result);
-              } else if (data.status === 'FAILURE') {
-                  clearInterval(checkStatusInterval);
-                  setBotResponse("مشکل از سمت سرور")
-              } else {
-                showBotTyping();
-              }
-          });
-      }, 1000); // Check status every second
-    },
-    error(xhr, textStatus) {
-      if (message.toLowerCase() === "/restart") {
-        $("#userInput").prop("disabled", false);
-        // if you want the bot to start the conversation after the restart action.
-        // actionTrigger();
-        // return;
-      }
-
-      // if there is no response from rasa server, set error bot response
-      setBotResponse("");
-      console.log("Error from bot end: ", textStatus);
-    },
-  });
+      }).then(function(response) {
+          return response.json();
+      }).then(function(botResponse) {
+        var messageId = botResponse.id;
+        // Check the status of messageId here
+        var checkStatusInterval = setInterval(function() {
+          // TODO: set timeout
+            fetch(`${backendUrl}/api/chatbot/messages/track/${messageId}/`)
+            .then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                hideBotTyping();
+                if (data.status === 'SUCCESS') {
+                    clearInterval(checkStatusInterval);
+                    // Append the response message to the chatbox
+                    setBotResponse(data.result);
+                } else if (data.status === 'FAILURE') {
+                    clearInterval(checkStatusInterval);
+                    setBotResponse("مشکل از سمت سرور")
+                } else {
+                  showBotTyping();
+                }
+            });
+        }, 1000); // Check status every second
+      });
 }
 /**
  * sends an event to the bot,
