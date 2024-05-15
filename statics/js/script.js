@@ -46,17 +46,18 @@ window.addEventListener('load', () => {
   });
   // Toggle the chatbot screen
   var firstTime = true;
-  $("#profile_div").click(() => {
+  function openChatBot() {
     $(".profile_div").toggle();
     $(".widget").toggle();
     if (firstTime) {
       showBotTyping();
-      setBotResponse("سلام 👋<br>" + 
-              "من دستیار هوشمند مالیاتی شما هستم.<br>" +
-              "چگونه می‌توانم به شما کمک کنم؟");
+      setBotResponse("Hi 👋<br>" + 
+              "I'm you AI assistant.<br>" +
+              "How can I help you?");
       firstTime = false;
     }
-  });
+  }
+  // $("#profile_div").click(openChatBot);
 
   // clear function to clear the chat contents of the widget.
   $("#clear").click(() => {
@@ -77,5 +78,23 @@ window.addEventListener('load', () => {
     $(".profile_div").toggle();
     $(".widget").toggle();
     scrollToBottomOfResults();
+  });
+
+  $('#upload-button').click(() => {
+    alert("clicked");
+    var fileInput = $('#file-input')[0];
+
+    if (fileInput && fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        $('#status').html('Uploading ' + file.name + '...');
+        // Here you can add the code to upload the file.
+        // This will depend on how you're handling the file upload on the server side.
+        $('#status').html('Uploaded successfully');
+        $('#overlay-screen').css('display', 'block');
+        $("#profile_div").click(openChatBot);
+        $("#profile_div").show();
+    } else {
+      $('#status').html('Please select a file to upload.');
+    }
   });
 });

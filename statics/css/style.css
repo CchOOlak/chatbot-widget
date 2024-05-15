@@ -1,7 +1,64 @@
 body {
-  font-family: "Open Sans", sans-serif;
-  background: blanchedalmond;
+  font-family: "Open Sans", sans-serif, "Lato";
+  background: rgb(241, 236, 229);
   background-size: cover;
+}
+
+/* Upload related */
+
+@keyframes fadeInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#upload-box {
+  font-family: 'Lato';
+  background-color: #ffffff;
+  animation: fadeInFromTop 2s ease-out;
+  width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+#upload-button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #21678a;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80%;
+}
+
+#upload-button:hover {
+  background-color: #0056b3;
+}
+
+#status {
+  color: black;
+  margin-top: 20px;
+}
+
+#overlay-screen {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
 }
 
 /* ============= css related to chats =============== */
@@ -16,6 +73,7 @@ body {
   background: #fff url('../img/bgchat.png');
   border-radius: 10px 10px 10px 10px;
   box-shadow: 0 0px 1px 0 rgba(0, 0, 0, 0.16), 0 0px 5px 0 #00000096;
+  z-index: 10000;
 }
 
 .chat_header {
@@ -27,9 +85,6 @@ body {
 }
 
 .chat_header_title {
-  font-family: fontsans, Tahoma, Arial;
-  font-weight: 300;
-  line-height: 1.5em;
   color: white;
   float: left;
   margin-top: 3%;
@@ -69,7 +124,6 @@ div.chats::-webkit-scrollbar {
 }
 
 .botMsg {
-  font-family: fontsans, Tahoma, Arial;
   font-weight: 50;
   line-height: 1.5em;
   float: left;
@@ -121,7 +175,6 @@ textarea-webkit-scrollbar {
 }
 
 .userMsg {
-  font-family: fontsans, Tahoma, Arial;
   font-weight: 50;
   line-height: 1.5em;
   animation: animateElement linear 0.2s;
@@ -195,6 +248,7 @@ blockquote {
   border-radius: 50%;
   float: right;
   margin: 5px;
+  margin-right: 15px;
   text-align: center;
   padding: 5px;
   font-size: 20px;
@@ -271,13 +325,15 @@ blockquote {
 }
 
 .profile_div {
-  /* display: none; */
+  display: none;
+  animation: fadeInFromTop 2s ease-out;
   position: fixed;
   padding: 5px;
   width: 10%;
   bottom: 0;
   right: 0;
   cursor: pointer;
+  z-index: 10000;
 }
 
 /* css for dropdown menu of the bot */
